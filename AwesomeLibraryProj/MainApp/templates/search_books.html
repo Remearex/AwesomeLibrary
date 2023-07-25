@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Books</title>
+</head>
+<body>
+    <h1>Search Books</h1>
+    <form method="post" action="{% url 'search_books_by_title' %}">
+        {% csrf_token %}
+        <label for="title">Search by Book Title:</label>
+        <input type="text" name="title" id="title">
+        <input type="submit" value="Search">
+    </form>
+
+    <form method="post" action="{% url 'search_books_by_author' %}">
+        {% csrf_token %}
+        <label for="author_name">Search by Author Name:</label>
+        <input type="text" name="author_name" id="author_name">
+        <input type="submit" value="Search">
+    </form>
+
+    <form method="post" action="{% url 'search_books_by_genre' %}">
+        {% csrf_token %}
+        <label for="genre_name">Search by Genre Name:</label>
+        <input type="text" name="genre_name" id="genre_name">
+        <input type="submit" value="Search">
+    </form>
+
+    <a href="{% url 'book_list' %}">Back to Book List</a>
+</body>
+</html>

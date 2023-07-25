@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>create author</title>
+</head>
+<body>
+    <h1>create author</h1>
+    <form method="post">
+        {% csrf_token %}
+        <input type="text" id="author_name" name="author_name">
+        <button type="submit">Create</button>
+    </form>
+</body>
+</html>

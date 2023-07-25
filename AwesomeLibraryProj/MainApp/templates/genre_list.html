@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Genre List</title>
+</head>
+<body>
+    <h1>Genre List</h1>
+    <ul>
+        {% for genre in genres %}
+            <li>
+                <form method="post" action="{% url 'genre_delete' genre.id %}">
+                    {% csrf_token %}
+                    <input type="submit" value="{{ genre.name }}">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    Click to delete
+    <button><a href="{% url 'genre_create' %}">Add Genre</a></button>
+    <button><a href="{% url 'book_list' %}">back to books</a></button>
+</body>
+</html>

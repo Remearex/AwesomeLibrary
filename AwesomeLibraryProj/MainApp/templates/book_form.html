@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{% if form.instance.pk %}Update Book{% else %}Add Book{% endif %}</title>
+</head>
+<body>
+    <h1>{% if form.instance.pk %}Update Book{% else %}Add Book{% endif %}</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="{% if form.instance.pk %}Update{% else %}Add{% endif %}">
+    </form>
+    don't see your author/genre? Add them here:
+    <button><a href="{% url 'author_create' %}">Add Authors</a></button>
+    <button><a href="{% url 'genre_create' %}">Add Genres</a></button>
+</body>
+</html>
