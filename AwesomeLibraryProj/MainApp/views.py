@@ -13,8 +13,8 @@ def book_list(request):
     books = Book.objects.all()
     return render(request, 'book_list.html', {'books': books})
 
-def book_detail(request, book_title):
-    book = get_object_or_404(Book, title=book_title)
+def book_detail(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
     return render(request, 'book_detail.html', {'book': book})
 
 def book_create(request):
@@ -27,21 +27,27 @@ def book_create(request):
         form = BookForm()
     return render(request, 'book_form.html', {'form': form})
 
-def book_update(request, book_title):
-    book = get_object_or_404(Book, title=book_title)
+def book_update(request, book_id):
+    # Get the existing book instance from the database or return a 404 error if not found
+    book = get_object_or_404(Book, id=book_id)
+
     if request.method == 'POST':
+        # If the form is submitted, process the data
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
-            return redirect('book_list')
+            return redirect('book_list')  # Redirect to the book list after successful update
         else:
-            print(form.errors)  # Print form errors for debugging
+            print("Form errors:", form.errors)  # Print form errors for debugging
+            print("POST data:", request.POST)   # Print request POST data for debugging
     else:
+        # If the request is a GET, show the form with the existing book's data
         form = BookForm(instance=book)
-    return render(request, 'book_form.html', {'form': form})
 
-def book_delete(request, book_title):
-    book = get_object_or_404(Book, title=book_title)
+    return render(request, 'book_form.html', {'form': form, 'id': book_id})
+
+def book_delete(request, book_id):
+    book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
         book.delete()
         return redirect('book_list')
@@ -59,9 +65,9 @@ def author_create(request):
         author = Author()
         author.name = author_name_
         author.save()
-        return redirect('author_list')
     else:
-        return render(request, 'author_create.html')
+        print("request isn't post")
+    return redirect('author_list')
     
 def author_delete(request, author_name):
     author = get_object_or_404(Author, name=author_name)
@@ -81,9 +87,9 @@ def genre_create(request):
         genre = Genre()
         genre.name = genre_name_
         genre.save()
-        return redirect('genre_list')
     else:
-        return render(request, 'genre_create.html')
+        print("request isn't post")
+    return redirect('genre_list')
     
 def genre_delete(request, genre_name):
     genre = get_object_or_404(Genre, name=genre_name)

@@ -7,7 +7,7 @@
     <h1>Book List</h1>
     <ul>
         {% for book in books %}
-            <li><a href="{% url 'book_detail' book.title %}">{{ book.title }}</a></li>
+            <li><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></li>
         {% endfor %}
     </ul>
     <button><a href="{% url 'book_create' %}">Add Book</a></button>

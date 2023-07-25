@@ -13,10 +13,10 @@ class Genre(models.Model):
         return self.name
 
 class Book(models.Model):
-    title = models.CharField(max_length=200, primary_key=True)
+    title = models.CharField(max_length=255)
     pages = models.IntegerField()
-    published_by = models.CharField(max_length=100)
-    quote = models.CharField(max_length=500)
+    published_by = models.CharField(max_length=255)
+    quote = models.CharField(max_length=255)
 
     authors = models.ManyToManyField(Author, related_name="books", through='BookAuthor')
     genres = models.ManyToManyField(Genre, related_name='books', through='BookGenre')

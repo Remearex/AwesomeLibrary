@@ -31,7 +31,7 @@ class BookCRUDTests(TestCase):
         self.assertEqual(set(response.context['books']), set([self.book1, self.book2, self.book3, self.book4]))
 
     def test_book_detail_view(self):
-        response = self.client.get(reverse('book_detail', args=[self.book1.title]))
+        response = self.client.get(reverse('book_detail', args=[self.book1.id]))
         self.assertEqual(response.context['book'], self.book1)
 
     def test_book_create_view(self):
@@ -49,21 +49,21 @@ class BookCRUDTests(TestCase):
 
     def test_book_update_view(self):
         data = {
-            'title': 'Updated Book',
+            'title': 'Updated title',
             'pages': 220,
             'published_by': 'Updated Publisher',
             'quote': 'Updated Quote',
             'authors': [self.author2.name],
             'genres': [self.genre2.name],
         }
-        response = self.client.post(reverse('book_update', args=[self.book1.title]), data)
+        response = self.client.post(reverse('book_update', args=[self.book1.id]), data)
         self.assertEqual(response.status_code, 302)  # Should redirect after successful update
 
         # Refresh the book instance from the database
         self.book1.refresh_from_db()
 
         # Compare the updated attributes of the book
-        self.assertEqual(self.book1.title, 'Updated Book')
+        self.assertEqual(self.book1.title, 'Updated title')
         self.assertEqual(self.book1.pages, 220)
         self.assertEqual(self.book1.published_by, 'Updated Publisher')
         self.assertEqual(self.book1.quote, 'Updated Quote')
@@ -73,9 +73,9 @@ class BookCRUDTests(TestCase):
         self.assertListEqual(list(self.book1.genres.values_list('name', flat=True)), [self.genre2.pk])
 
     def test_book_delete_view(self):
-        response = self.client.post(reverse('book_delete', args=[self.book2.title]))
+        response = self.client.post(reverse('book_delete', args=[self.book2.id]))
         self.assertEqual(response.status_code, 302)  # Should redirect after successful delete
-        self.assertFalse(Book.objects.filter(title=self.book2.title).exists())
+        self.assertFalse(Book.objects.filter(id=self.book2.id).exists())
 
     def test_search_books_by_title(self):
         response = self.client.post(reverse('search'), 
