@@ -13,8 +13,8 @@ def book_list(request):
     books = Book.objects.all()
     return render(request, 'book_list.html', {'books': books})
 
-def book_detail(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
+def book_detail(request, book_title):
+    book = get_object_or_404(Book, title=book_title)
     return render(request, 'book_detail.html', {'book': book})
 
 def book_create(request):
@@ -27,19 +27,21 @@ def book_create(request):
         form = BookForm()
     return render(request, 'book_form.html', {'form': form})
 
-def book_update(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
+def book_update(request, book_title):
+    book = get_object_or_404(Book, title=book_title)
     if request.method == 'POST':
         form = BookForm(request.POST, instance=book)
         if form.is_valid():
             form.save()
             return redirect('book_list')
+        else:
+            print(form.errors)  # Print form errors for debugging
     else:
         form = BookForm(instance=book)
     return render(request, 'book_form.html', {'form': form})
 
-def book_delete(request, book_id):
-    book = get_object_or_404(Book, id=book_id)
+def book_delete(request, book_title):
+    book = get_object_or_404(Book, title=book_title)
     if request.method == 'POST':
         book.delete()
         return redirect('book_list')
@@ -61,8 +63,8 @@ def author_create(request):
     else:
         return render(request, 'author_create.html')
     
-def author_delete(request, author_id):
-    author = get_object_or_404(Author, id=author_id)
+def author_delete(request, author_name):
+    author = get_object_or_404(Author, name=author_name)
     # no need to check the request type since we only send post requests to this endpoint
     author.delete()
     return redirect('author_list')
@@ -83,8 +85,8 @@ def genre_create(request):
     else:
         return render(request, 'genre_create.html')
     
-def genre_delete(request, genre_id):
-    genre = get_object_or_404(Genre, id=genre_id)
+def genre_delete(request, genre_name):
+    genre = get_object_or_404(Genre, name=genre_name)
     # no need to check the request type since we only send post requests to this endpoint
     genre.delete()
     return redirect('genre_list')
@@ -92,31 +94,52 @@ def genre_delete(request, genre_id):
 # search functions
 
 def search(request):
-    return render(request, 'search_books.html')
-
-def search_books_by_title(request):
     if request.method == 'POST':
-        title = request.POST.get('title')
-        books = Book.objects.filter(title__icontains=title)
-        return render(request, 'search_results.html', {'books': books})
+        search_category = request.POST.get('search_category')
+        search_mode = request.POST.get('search_mode')
+        raw_input = request.POST.get('raw_input')
+        input = list(map(lambda x: x.strip(), raw_input.split(',')))
+        if search_category == 'Titles':
+            query_result = search_books_by_title(search_mode, input)
+        elif search_category == 'Authors':
+            query_result = search_books_by_author(search_mode, input)
+        else:
+            query_result = search_books_by_genre(search_mode, input)
+        return render(request, 'search_results.html', {'books': query_result})
     return render(request, 'search_books.html')
 
-def search_books_by_author(request):
-    if request.method == 'POST':
-        author_name = request.POST.get('author_name')
+def search_books_by_title(search_mode, input):
+    if search_mode == 'contains_all':
+        query_result = Book.objects.all()
+        for title in input:
+            query_result = query_result.filter(title__icontains=title)
+        return query_result
+    else:
+        query_result = Book.objects.none()
+        for title in input:
+            query_result = query_result.union(Book.objects.filter(title__icontains=title))
+        return query_result
 
-        # select all books who is related to an author whose name contains author_name
+def search_books_by_author(search_mode, input):
+    if search_mode == 'contains_all':
+        query_result = Book.objects.all()
+        for name in input:
+            query_result = query_result.filter(authors__name__icontains=name)
+        return query_result
+    else:
+        query_result = Book.objects.none()
+        for name in input:
+            query_result = query_result.union(Book.objects.filter(authors__name__icontains=name))
+        return query_result
 
-        books = Book.objects.filter(authors__name__icontains=author_name)
-        return render(request, 'search_results.html', {'books': books})
-    return render(request, 'search_books.html')
-
-def search_books_by_genre(request):
-    if request.method == 'POST':
-        genre_name = request.POST.get('genre_name')
-
-        # select all books who is related to a genre whose name contains genre_name
-
-        books = Book.objects.filter(genres__name__icontains=genre_name)
-        return render(request, 'search_results.html', {'books': books})
-    return render(request, 'search_books.html')
+def search_books_by_genre(search_mode, input):
+    if search_mode == 'contains_all':
+        query_result = Book.objects.all()
+        for name in input:
+            query_result = query_result.filter(genres__name__icontains=name)
+        return query_result
+    else:
+        query_result = Book.objects.none()
+        for name in input:
+            query_result = query_result.union(Book.objects.filter(genres__name__icontains=name))
+        return query_result

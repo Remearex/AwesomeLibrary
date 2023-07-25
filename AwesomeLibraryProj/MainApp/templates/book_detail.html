@@ -23,8 +23,8 @@
         {% endfor %}
     </ul>
 
-    <button><a href="{% url 'book_update' book.id %}">Edit</a></button>
-    <button><a href="{% url 'book_delete' book.id %}">Delete</a></button>
+    <button><a href="{% url 'book_update' book.title %}">Edit</a></button>
+    <button><a href="{% url 'book_delete' book.title %}">Delete</a></button>
     <button><a href="{% url 'book_list' %}">Back to Books</a></button>
 </body>
 </html>

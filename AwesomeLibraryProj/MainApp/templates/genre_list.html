@@ -5,18 +5,23 @@
 </head>
 <body>
     <h1>Genre List</h1>
+    Click to delete
     <ul>
         {% for genre in genres %}
             <li>
-                <form method="post" action="{% url 'genre_delete' genre.id %}">
+                <form method="post" action="{% url 'genre_delete' genre.name %}">
                     {% csrf_token %}
                     <input type="submit" value="{{ genre.name }}">
                 </form>
             </li>
         {% endfor %}
     </ul>
-    Click to delete
-    <button><a href="{% url 'genre_create' %}">Add Genre</a></button>
+    Add genre:
+    <form method="post" action="{% url 'genre_create' %}">
+        {% csrf_token %}
+        <input type="text" id="genre_name" name="genre_name">
+        <button type="submit">Add</button>
+    </form>
     <button><a href="{% url 'book_list' %}">back to books</a></button>
 </body>
 </html>

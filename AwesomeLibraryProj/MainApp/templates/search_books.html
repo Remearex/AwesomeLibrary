@@ -5,26 +5,28 @@
 </head>
 <body>
     <h1>Search Books</h1>
-    <form method="post" action="{% url 'search_books_by_title' %}">
+    <br>
+    <form method="post">
         {% csrf_token %}
-        <label for="title">Search by Book Title:</label>
-        <input type="text" name="title" id="title">
-        <input type="submit" value="Search">
+        <label for="search_category">Search by</label>
+        <select name="search_category" id="search_category">
+            <option value="Titles">Titles</option>
+            <option value="Authors">Authors</option>
+            <option value="Genres">Genres</option>
+        </select>
+        <label for="search_mode">with mode</label>
+        <select name="search_mode" id="search_mode">
+            <option value="contains_all">contains all</option>
+            <option value="contains_any">contains any</option>
+        </select>
+        <br><br>
+        <input type="text" name="raw_input" id="raw_input">
+        <input type="submit" value="Submit">
+        <br><br>
+        When entering a list of values, separate elements by commas
     </form>
 
-    <form method="post" action="{% url 'search_books_by_author' %}">
-        {% csrf_token %}
-        <label for="author_name">Search by Author Name:</label>
-        <input type="text" name="author_name" id="author_name">
-        <input type="submit" value="Search">
-    </form>
-
-    <form method="post" action="{% url 'search_books_by_genre' %}">
-        {% csrf_token %}
-        <label for="genre_name">Search by Genre Name:</label>
-        <input type="text" name="genre_name" id="genre_name">
-        <input type="submit" value="Search">
-    </form>
+    <br>
 
     <a href="{% url 'book_list' %}">Back to Book List</a>
 </body>
