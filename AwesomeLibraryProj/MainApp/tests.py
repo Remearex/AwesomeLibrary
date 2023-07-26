@@ -40,8 +40,8 @@ class BookCRUDTests(TestCase):
             'pages': 300,
             'published_by': 'Publisher 3',
             'quote': 'Quote 3',
-            'authors': [self.author1.name, self.author2.name],
-            'genres': [self.genre1.name, self.genre2.name],
+            'authors': [self.author1.pk, self.author2.pk],
+            'genres': [self.genre1.pk, self.genre2.pk],
         }
         response = self.client.post(reverse('book_create'), data)
         self.assertTrue(Book.objects.filter(title='New Book').exists())
@@ -52,10 +52,10 @@ class BookCRUDTests(TestCase):
             'pages': 220,
             'published_by': 'Updated Publisher',
             'quote': 'Updated Quote',
-            'authors': [self.author2.name],
-            'genres': [self.genre2.name],
+            'authors': [self.author2.pk],
+            'genres': [self.genre2.pk],
         }
-        response = self.client.post(reverse('book_update', args=[self.book1.id]), data)
+        response = self.client.post(reverse('book_update', args=[self.book1.pk]), data)
 
         # Refresh the book instance from the database
         self.book1.refresh_from_db()
@@ -67,8 +67,8 @@ class BookCRUDTests(TestCase):
         self.assertEqual(self.book1.quote, 'Updated Quote')
 
         # Compare the authors and genres using their primary keys
-        self.assertListEqual(list(self.book1.authors.values_list('name', flat=True)), [self.author2.pk])
-        self.assertListEqual(list(self.book1.genres.values_list('name', flat=True)), [self.genre2.pk])
+        self.assertListEqual(list(self.book1.authors.values_list('name', flat=True)), [self.author2.name])
+        self.assertListEqual(list(self.book1.genres.values_list('name', flat=True)), [self.genre2.name])
 
     def test_book_delete_view(self):
         response = self.client.post(reverse('book_delete', args=[self.book2.id]))
