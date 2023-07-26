@@ -1,0 +1,59 @@
+<!--{% load static %}-->
+<!DOCTYPE html>
+<html>
+<head>
+  <title>{% block title %}{% endblock %}</title>
+  <!--<link rel="stylesheet" href="{% static 'mystyle.css' %}">-->
+  <link rel="stylesheet" href="{% static 'css/portal.css' %}">
+  {% load bootstrap5 %}
+  {% bootstrap_css %}
+  {% bootstrap_javascript %}
+</head>
+<body>
+
+<header id="globalHeader" class='header'>
+  <div >
+    <h3> My Library</h3>
+  </div>
+</header>
+<div class="master-wrapper">
+  <nav class="side-nav" id="navbarSide">
+    <div class="wrapper">
+      <ul class="primary-list" id="listPrimary" data-role="tooltip">
+        <li class="menu-item" data-menuid="100" id="homeNav">
+          <div class="nav-icon">
+            <img src="{% static 'img/icon_home.svg' %}" alt="Home" class="navimg">
+          </div>
+          <a tabindex="0" class="nav-link " href="/" style="color: black;">Home</a>
+          
+        </li>
+        <li class="menu-item" data-menuid="101" id="booksNav">
+          <div class="nav-icon">
+            <img src="{% static 'img/icon_books.svg' %}" alt="Home" class="navimg">
+          </div>
+          <a tabindex="0" class="nav-link " href="/books">Books</a>
+        </li>
+        <li class="menu-item" data-menuid="102" id="authorsNav">
+          <div class="nav-icon">
+            <img src="{% static 'img/icon_authors.svg' %}" alt="Authors" class="navimg">
+          </div>
+          <a tabindex="0" class="nav-link" href="/author_list">Authors</a>
+        </li>
+        <li class="menu-item" data-menuid="103" id="genreNav">
+          <div class="nav-icon">
+            <img src="{% static 'img/icon_genre.svg' %}" alt="Genre" class="navimg">
+          </div>
+          <a tabindex="0" class="nav-link" href="/genre_list">Genre</a>
+        </li>
+      </ul>
+    </div>
+  </nav>  
+
+  <main class="content-wrapper">     
+    {% block content %}
+    {% endblock %}
+  </main>
+</div>
+
+</body>
+</html>

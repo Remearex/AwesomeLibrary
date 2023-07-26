@@ -1,27 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Genre List</title>
-</head>
-<body>
-    <h1>Genre List</h1>
-    Click to delete
-    <ul>
-        {% for genre in genres %}
-            <li>
-                <form method="post" action="{% url 'genre_delete' genre.name %}">
-                    {% csrf_token %}
-                    <input type="submit" value="{{ genre.name }}">
-                </form>
-            </li>
-        {% endfor %}
-    </ul>
-    Add genre:
+{% extends "master.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+  <h2>Genre List</h2>
+  <div>
+    Add Genre:
     <form method="post" action="{% url 'genre_create' %}">
         {% csrf_token %}
         <input type="text" id="genre_name" name="genre_name">
         <button type="submit">Add</button>
     </form>
     <button><a href="{% url 'book_list' %}">back to books</a></button>
-</body>
-</html>
+    <br>
+    click on a genre to delete
+  </div>
+  <div class="row fixTableHead" style="width:80%; overflow:auto; margin-left:20px;">
+    <table class="table table-bordered table-striped" id="tblmain" spellcheck="false">
+      <thead class="table-bordered " style="background-color: lightskyblue;">
+        <tr>
+          <th scope="col" name=""> ID </th>
+          <th scope="col" name=""> Name </th>
+        </tr>
+      </thead>
+      <tbody id="tbodymain" activerowidx="0"> 
+        {% for genre in genres %}
+        <tr>
+          <td class="field-id">{{ genre.id }} </td>  
+          <td class="field-name">
+            <form method="post" action="{% url 'genre_delete' genre.name %}">
+              {% csrf_token %}
+              <input type="submit" value="{{ genre.name }}">
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+{% endblock %}
+
+

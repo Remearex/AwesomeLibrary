@@ -1,11 +1,10 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>{% if form.instance.pk %}Update Book{% else %}Add Book{% endif %}</title>
-</head>
-<body>
-    <h1>{% if form.instance.pk %}Update Book{% else %}Add Book{% endif %}</h1>
-    ID: {{id}}
+{% extends "master.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
+  <h1>{% if form.instance.pk %}Update Book{% else %}Add Book{% endif %}</h1>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
@@ -14,5 +13,6 @@
     don't see your author/genre? Add them here:
     <button><a href="{% url 'author_list' %}">Authors</a></button>
     <button><a href="{% url 'genre_list' %}">Genres</a></button>
-</body>
-</html>
+{% endblock %}
+
+

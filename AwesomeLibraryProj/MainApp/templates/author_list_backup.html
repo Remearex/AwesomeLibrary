@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Author List</title>
+</head>
+<body>
+    <h1>Author List</h1>
+    click to delete
+    <ul>
+        {% for author in authors %}
+            <li>
+                <form method="post" action="{% url 'author_delete' author.name %}">
+                    {% csrf_token %}
+                    <input type="submit" value="{{ author.name }}">
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    Add author:
+    <form method="post" action="{% url 'author_create' %}">
+        {% csrf_token %}
+        <input type="text" id="author_name" name="author_name">
+        <button type="submit">Add</button>
+    </form>
+    <button><a href="{% url 'book_list' %}">back to books</a></button>
+</body>
+</html>

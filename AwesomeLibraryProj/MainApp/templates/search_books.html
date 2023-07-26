@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Books</title>
-</head>
-<body>
+{% extends "master.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
     <h1>Search Books</h1>
     <br>
     <form method="post">
@@ -29,5 +29,4 @@
     <br>
 
     <button><a href="{% url 'book_list' %}">Back to Book List</a></button>
-</body>
-</html>
+{% endblock %}

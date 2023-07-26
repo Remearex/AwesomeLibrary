@@ -1,16 +1,30 @@
 from django.db import models
 
 class Author(models.Model):
-    name = models.CharField(max_length=200, primary_key=True)
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
     
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name"], name="unique_author_name"
+            )
+        ]
+    
 class Genre(models.Model):
-    name = models.CharField(max_length=200, primary_key=True)
+    name = models.CharField(max_length=200)
 
     def __str__(self):
         return self.name
+    
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(
+                fields=["name"], name="unique_genre_name"
+            )
+        ]
 
 class Book(models.Model):
     title = models.CharField(max_length=255)

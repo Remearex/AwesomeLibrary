@@ -1,9 +1,9 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Book Detail</title>
-</head>
-<body>
+{% extends "master.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
     <h1>{{ book.title }}</h1>
     <p>Pages: {{ book.pages }}</p>
     <p>Published by: {{ book.published_by }}</p>
@@ -26,5 +26,4 @@
     <button><a href="{% url 'book_update' book.id %}">Edit</a></button>
     <button><a href="{% url 'book_delete' book.id %}">Delete</a></button>
     <button><a href="{% url 'book_list' %}">Back to Books</a></button>
-</body>
-</html>
+{% endblock %}

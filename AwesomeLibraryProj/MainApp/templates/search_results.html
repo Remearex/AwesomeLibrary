@@ -1,17 +1,44 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Search Results</title>
-</head>
-<body>
+{% extends "master.html" %}
+
+{% block title %}
+{% endblock %}
+
+{% block content %}
     <h1>Search Results</h1>
-    <ul>
-        {% for book in books %}
-            <li><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></li>
-        {% empty %}
-            <li>No books found.</li>
-        {% endfor %}
-    </ul>
+
+    <div class="row fixTableHead" style="width:80%; overflow:auto; margin-left:20px;">
+        <table class="table table-bordered table-striped" id="tblmain" spellcheck="false">
+          <thead class="table-bordered " style="background-color: lightskyblue;">
+            <tr>
+              <th scope="col" class=""> ID </th>
+              <th scope="col" class=""> Title </th>
+              <th scope="col"> Authors </th>
+              <th scope="col"> Genres </th>
+              <th scope="col"> Page </th>
+            </tr>
+          </thead>
+          <tbody id="tbodymain" activerowidx="0"> 
+            {% for book in books %}
+              <tr>
+                <td class="field-id">{{ book.id }} </td>
+                <td class="field-title"><a href="{% url 'book_detail' book.id %}">{{ book.title }}</a></td>
+                <td class="field-authors">
+                  {% for author in book.authors.all %}
+                    {{ author.name }}
+                    {% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </td>
+                <td class="field-genres">
+                  {% for genre in book.genres.all %}
+                    {{ genre.name }}
+                    {% if not forloop.last %}, {% endif %}
+                  {% endfor %}
+                </td>
+                <td class="field-page">{{ book.pages }} </td>
+              </tr>
+              {% endfor %}
+          </tbody>
+        </table>
+    </div>
     <a href="{% url 'book_list' %}">Back to Book List</a>
-</body>
-</html>
+{% endblock %}

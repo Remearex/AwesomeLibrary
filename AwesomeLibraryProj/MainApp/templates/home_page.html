@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home</title>
-</head>
-<body>
-    <h1>Awesome Library</h1>
-    <button><a href="{% url 'book_list' %}">See books</a></button>
-</body>
-</html>
+{% extends "master.html" %}
+
+{% block content %}
+  <h3>My Library</h3>
+  
+  <p>Check out all our <a href="{% url 'book_list' %}">Books</a></p>
+  
+{% endblock %}
